@@ -1,0 +1,40 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+if ARCH_CHIP_STM32N6
+
+comment "STM32N6 Configuration Options"
+
+config STM32_N6_PERIPHERALS
+	bool
+	default y
+	select STM32_HAVE_USART1
+
+config STM32_STM32N6XXXX
+	bool
+	default y
+
+choice
+	prompt "STM32 N6 Chip Selection"
+	default ARCH_CHIP_STM32N657X0
+	depends on ARCH_CHIP_STM32N6
+
+config ARCH_CHIP_STM32N657X0
+	bool "STM32N657X0"
+	select STM32_STM32N6XXXX
+
+endchoice
+
+config STM32N6_DEBUG
+	bool "Enable debugger access after boot"
+	default n
+	---help---
+		Reopen secure and non-secure debugger access at the current hardware
+		protection level early in startup.  The boot ROM can close this access
+		when booting from external flash.  Enable this option for development
+		to attach without switching to DEV boot mode.  This changes runtime
+		BSEC registers only, not OTP fuses.
+
+endif # ARCH_CHIP_STM32N6
